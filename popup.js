@@ -1,26 +1,10 @@
-document.getElementById('loginButton').addEventListener('click', async () => {
-    const proxy = {
-      host: 'server.sixproxy.com',
-      port: 24654,
-      auth: {
-        username: '7a92acc116',
-        password: '81ce3d0a49'
-      }
-    };
-  
-    const url = 'http://roboturbo.com.br/acesso.php?email=mdiasbarbosa14@gmail.com&pass=Mat5515265022adheart&site=httpsadheart&versao=20230213R4';
+document.getElementById("loginButton").addEventListener("click", async () => {
+    const backendUrl = "https://mateusproj-extenxao-44np-mateus-mdb.vercel.app/proxy";
+    const targetUrl =
+      "http://roboturbo.com.br/acesso.php?email=mdiasbarbosa14@gmail.com&pass=Mat5515265022adheart&site=httpsadheart&versao=20230213R4";
   
     try {
-      const response = await axios.get(url, {
-        proxy: proxy,
-        headers: {
-          'Host': 'roboturbo.com.br',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
-          'Accept': '*/*',
-          'Accept-Language': 'pt-BR,pt;q=0.9',
-        }
-      });
-  
+      const response = await axios.post(backendUrl, { url: targetUrl });
       const data = response.data;
   
       if (data.length > 0) {
@@ -30,24 +14,33 @@ document.getElementById('loginButton').addEventListener('click', async () => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           const activeTab = tabs[0];
   
-          chrome.cookies.set({
-            url: activeTab.url,
+          const newCookie = {
+            url: url,
             name: cookieData.name,
             value: cookieData.value,
+            domain: cookieData.domain,
             path: cookieData.path,
-            httpOnly: cookieData.httpOnly,
             secure: cookieData.secure,
+            httpOnly: cookieData.httpOnly,
             sameSite: cookieData.sameSite,
             expirationDate: cookieData.expirationDate,
-          });
+          };
   
-          alert('Login realizado com sucesso!');
+          chrome.cookies.set(newCookie, (cookie) => {
+            if (chrome.runtime.lastError) {
+              console.error(chrome.runtime.lastError);
+            } else {
+              console.log("Cookie set:", cookie);
+              alert("Logado com sucesso!");
+            }
+          });
         });
       } else {
-        alert('Erro ao realizar login.');
+        alert("Erro ao fazer login, por favor tente novamente.");
       }
     } catch (error) {
-      alert('Erro ao realizar requisição.');
+      console.error("Erro ao fazer requisição:", error);
+      alert("Erro ao fazer login, por favor tente novamente.");
     }
   });
   
