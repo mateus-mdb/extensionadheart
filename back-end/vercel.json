@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "proxy-backend",
+    "builds": [{ "src": "server.js", "use": "@vercel/node" }],
+    "routes": [
+      { "src": "/proxy", "methods": ["POST"], "dest": "server.js" }
+    ],
+    "env": {
+      "PORT": "3000"
+    }
+  }
+  
