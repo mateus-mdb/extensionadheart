@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Login Extensão",
+  "version": "1.0",
+  "description": "Uma extensão que realiza login e salva cookies.",
+  "permissions": [
+    "cookies",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "48": "icon.png"
+  }
+}
